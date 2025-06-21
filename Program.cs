@@ -48,7 +48,7 @@ class Program
         };
 
         
-        ISolver solver = new BruteForce(cages);
+        ISolver solver = new Propagation(cages);
 
         var sw = Stopwatch.StartNew();
         bool solved = solver.Solve();

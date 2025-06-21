@@ -2,6 +2,9 @@ using System.Collections.Generic;
 
 namespace KillerSudoku;
 
+
+
+//TODO: ZEGGEN DAT CASHEN SNELLER KAN ZIJN. WANT NU DOORZOEKT HET HELE BOARD VOOR IEDERE CAGE VOOR DE GEGEVEN CEL
 public class CageConstraint : IConstraint
 {
     private readonly List<Cage> cages;

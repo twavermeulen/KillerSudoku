@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace KillerSudoku;
 
-public class BackTracking : ISolver
+public class Heuristics : ISolver
 {
     int[,] board = new int[9, 9];
     List<Cage> cages; 
     List<IConstraint> constraints;
 
-    public BackTracking(List<Cage> cages)
+    public Heuristics(List<Cage> cages)
     {
         this.cages = cages;
         constraints = new List<IConstraint>
@@ -31,30 +31,58 @@ public class BackTracking : ISolver
 
     public bool Solve()
     {
-        return SolveIternal(0, 0);
+        return SolveIternal();
     }
 
-    public bool SolveIternal(int row = 0, int col = 0)
+    public bool SolveIternal()
     {
-        if (row == 9) return true;
-        if (col == 9) return SolveIternal(row + 1, 0);
-        
-        //alleen nodig bij normale sudoku, niet bij killer sudoku
-        if (board[row, col] != 0)
-            return SolveIternal(row, col + 1);
+        var cell = GetMRVCell();
+        if (cell == null) return true; // puzzle solved
+
+        int row = cell.Value.row;
+        int col = cell.Value.col;
 
         for (int num = 1; num <= 9; num++)
         {
             if (IsValid(row, col, num))
             {
                 board[row, col] = num;
-                if (SolveIternal(row, col + 1)) return true;
+                if (SolveIternal()) return true;
                 board[row, col] = 0;
             }
         }
         return false;
     }
+
     
+    
+    (int row, int col)? GetMRVCell()
+    {
+        int minOptions = 10;
+        int minRow = -1, minCol = -1;
+
+        for (int r = 0; r < 9; r++)
+        {
+            for (int c = 0; c < 9; c++)
+            {
+                if (board[r, c] != 0) continue;
+
+                int options = 0;
+                for (int n = 1; n <= 9; n++)
+                    if (IsValid(r, c, n)) options++;
+
+                if (options < minOptions)
+                {
+                    minOptions = options;
+                    minRow = r;
+                    minCol = c;
+                }
+            }
+        }
+
+        return minRow == -1 ? null : (minRow, minCol);
+    }
+
 
     public void PrintBoard()
     {

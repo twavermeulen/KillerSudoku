@@ -8,7 +8,6 @@ public static class Coloring
 {
     public static Dictionary<Cage, int> ColorCages(List<Cage> cages, int colorCount)
     {
-        // Build adjacency graph
         var adjacency = new Dictionary<Cage, HashSet<Cage>>();
         foreach (var cage in cages)
             adjacency[cage] = new HashSet<Cage>();
@@ -30,8 +29,7 @@ public static class Coloring
                 }
             }
         }
-
-        // Backtracking coloring
+        
         var coloring = new Dictionary<Cage, int>();
         bool Color(int idx)
         {

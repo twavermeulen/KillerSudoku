@@ -7,13 +7,12 @@ using System.Threading;
 public static class Printer
 {
     static Dictionary<Cage, int> cageColoring;
-    static List<ConsoleColor> cageColors = new List<ConsoleColor>
+    static List<ConsoleColor> cageColors = new()
     {
-        ConsoleColor.DarkBlue, ConsoleColor.DarkGreen, ConsoleColor.DarkCyan,
-        ConsoleColor.DarkRed, ConsoleColor.DarkMagenta, ConsoleColor.DarkYellow,
-        ConsoleColor.Gray, ConsoleColor.DarkGray, ConsoleColor.Blue,
-        ConsoleColor.Green, ConsoleColor.Cyan, ConsoleColor.Red,
-        ConsoleColor.Magenta, ConsoleColor.Yellow, ConsoleColor.White
+        ConsoleColor.DarkBlue,
+        ConsoleColor.DarkGreen,
+        ConsoleColor.DarkCyan,
+        ConsoleColor.DarkRed
     };
 
     public static void InitializeColoring(List<Cage> cages)
@@ -25,7 +24,7 @@ public static class Printer
     {
         if (cageColoring == null) InitializeColoring(cages);
 
-        Console.Clear(); // Clear the terminal before printing
+        Console.SetCursorPosition(0, 0); 
 
         for (int r = 0; r < 9; r++)
         {

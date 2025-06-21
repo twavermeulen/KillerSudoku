@@ -47,7 +47,7 @@ class Program
             new Cage(new List<(int,int)> { (8,7), (8,8) }, 17),
         };
 
-        var solver = new Backtracking(cages);
+        var solver = new BruteForce(cages);
 
         var sw = Stopwatch.StartNew();
         bool solved = solver.Solve();

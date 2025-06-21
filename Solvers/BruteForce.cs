@@ -29,18 +29,22 @@ public class BruteForce : ISolver
         return true;
     }
 
-    public bool Solve(int row = 0, int col = 0)
+    public bool Solve()
+    {
+        return SolveIternal(0, 0);
+    }
+
+    public bool SolveIternal(int row = 0, int col = 0)
     {
         if (row == 9) return true;
-        if (col == 9) return Solve(row + 1, 0);
-        if (board[row, col] != 0) return Solve(row, col + 1);
+        if (col == 9) return SolveIternal(row + 1, 0);
 
         for (int num = 1; num <= 9; num++)
         {
             if (IsValid(row, col, num))
             {
                 board[row, col] = num;
-                if (Solve(row, col + 1)) return true;
+                if (SolveIternal(row, col + 1)) return true;
                 board[row, col] = 0;
             }
         }

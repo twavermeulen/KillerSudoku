@@ -8,7 +8,7 @@ public static class Printer
 {
     public static void Print(int[,] board, List<Cage> cages)
     {
-        Console.Clear();
+        Console.SetCursorPosition(0, 0);
         var cageColors = new List<ConsoleColor>
         {
             ConsoleColor.DarkBlue, ConsoleColor.DarkGreen, ConsoleColor.DarkCyan,
@@ -27,12 +27,7 @@ public static class Printer
                 {
                     var bg = cageColors[cageIndex % cageColors.Count];
                     Console.BackgroundColor = bg;
-                    // Use white text for dark backgrounds, black for light backgrounds
-                    Console.ForegroundColor = bg switch
-                    {
-                        ConsoleColor.Yellow or ConsoleColor.White or ConsoleColor.Gray => ConsoleColor.Black,
-                        _ => ConsoleColor.White
-                    };
+                    Console.ForegroundColor = ConsoleColor.Black;
                 }
                 else
                 {

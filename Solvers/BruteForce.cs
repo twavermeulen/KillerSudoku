@@ -6,7 +6,7 @@ namespace KillerSudoku;
 public class BruteForce : ISolver
 {
     int[,] board = new int[9, 9];
-    List<Cage> cages; 
+    List<Cage> cages;
     List<IConstraint> constraints;
 
     public BruteForce(List<Cage> cages)
@@ -21,36 +21,42 @@ public class BruteForce : ISolver
         };
     }
 
-    bool IsValid(int row, int col, int num)
+    bool IsValidBoard()
     {
-        foreach (var constraint in constraints)
-            if (!constraint.IsValid(board, row, col, num))
-                return false;
+        for (int row = 0; row < 9; row++)
+        for (int col = 0; col < 9; col++)
+        {
+            int num = board[row, col];
+            if (num < 1 || num > 9) return false;
+            foreach (var constraint in constraints)
+                if (!constraint.IsValid(board, row, col, num))
+                    return false;
+        }
         return true;
     }
 
     public bool Solve()
     {
-        return SolveIternal(0, 0);
+        return GenerateAndTest(0);
     }
-
-    public bool SolveIternal(int row = 0, int col = 0)
+    
+    bool GenerateAndTest(int idx)
     {
-        if (row == 9) return true;
-        if (col == 9) return SolveIternal(row + 1, 0);
+        if (idx == 81)
+            return IsValidBoard();
+
+        int row = idx / 9;
+        int col = idx % 9;
 
         for (int num = 1; num <= 9; num++)
         {
-            if (IsValid(row, col, num))
-            {
-                board[row, col] = num;
-                if (SolveIternal(row, col + 1)) return true;
-                board[row, col] = 0;
-            }
+            board[row, col] = num;
+            if (GenerateAndTest(idx + 1))
+                return true;
         }
+        board[row, col] = 0;
         return false;
     }
-    
 
     public void PrintBoard()
     {

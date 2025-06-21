@@ -83,15 +83,4 @@ public class Heuristics : ISolver
 
         return minRow == -1 ? null : (minRow, minCol);
     }
-
-
-    public void PrintBoard()
-    {
-        for (int r = 0; r < 9; r++)
-        {
-            for (int c = 0; c < 9; c++)
-                Console.Write(board[r, c] + " ");
-            Console.WriteLine();
-        }
-    }
 }

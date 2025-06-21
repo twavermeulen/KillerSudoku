@@ -6,7 +6,6 @@ using System.Threading;
 
 public static class Printer
 {
-    // Assigns a unique (or cycled) color to each cage, up to the number of available colors.
     public static void Print(int[,] board, List<Cage> cages)
     {
         Console.Clear();
@@ -16,10 +15,7 @@ public static class Printer
             ConsoleColor.DarkRed, ConsoleColor.DarkMagenta, ConsoleColor.DarkYellow,
             ConsoleColor.Gray, ConsoleColor.DarkGray, ConsoleColor.Blue,
             ConsoleColor.Green, ConsoleColor.Cyan, ConsoleColor.Red,
-            ConsoleColor.Magenta, ConsoleColor.Yellow, ConsoleColor.White,
-            ConsoleColor.DarkGray, ConsoleColor.Blue, ConsoleColor.Green,
-            ConsoleColor.Cyan, ConsoleColor.Red, ConsoleColor.Magenta,
-            ConsoleColor.Yellow, ConsoleColor.White
+            ConsoleColor.Magenta, ConsoleColor.Yellow, ConsoleColor.White
         };
 
         for (int r = 0; r < 9; r++)
@@ -28,9 +24,20 @@ public static class Printer
             {
                 int cageIndex = cages.FindIndex(cg => cg.Cells.Contains((r, c)));
                 if (cageIndex != -1)
-                    Console.BackgroundColor = cageColors[cageIndex % cageColors.Count];
+                {
+                    var bg = cageColors[cageIndex % cageColors.Count];
+                    Console.BackgroundColor = bg;
+                    // Use white text for dark backgrounds, black for light backgrounds
+                    Console.ForegroundColor = bg switch
+                    {
+                        ConsoleColor.Yellow or ConsoleColor.White or ConsoleColor.Gray => ConsoleColor.Black,
+                        _ => ConsoleColor.White
+                    };
+                }
                 else
+                {
                     Console.ResetColor();
+                }
 
                 Console.Write(board[r, c].ToString().PadLeft(2).PadRight(3));
                 Console.ResetColor();

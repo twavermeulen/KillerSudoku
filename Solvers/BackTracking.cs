@@ -21,6 +21,18 @@ public class BackTracking : ISolver
             new CageConstraint(cages)
         };
     }
+    
+    public BackTracking(int[,] board)
+    {
+        this.board = (int[,])board.Clone();
+        this.cages = new List<Cage>();
+        constraints = new List<IConstraint>
+        {
+            new RowConstraint(),
+            new ColumnConstraint(),
+            new BoxConstraint()
+        };
+    }
 
     bool IsValid(int row, int col, int num)
     {
@@ -48,7 +60,7 @@ public class BackTracking : ISolver
             if (IsValid(row, col, num))
             {
                 board[row, col] = num;
-                Printer.Print(board, cages);
+                // Printer.Print(board, cages);
                 if (SolveIternal(row, col + 1)) return true;
                 board[row, col] = 0;
             }

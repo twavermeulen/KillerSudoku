@@ -20,6 +20,18 @@ public class BruteForce : ISolver
             new CageConstraint(cages)
         };
     }
+    
+    public BruteForce(int[,] board)
+    {
+        this.board = (int[,])board.Clone();
+        this.cages = new List<Cage>();
+        constraints = new List<IConstraint>
+        {
+            new RowConstraint(),
+            new ColumnConstraint(),
+            new BoxConstraint()
+        };
+    }
 
     bool IsValidBoard()
     {

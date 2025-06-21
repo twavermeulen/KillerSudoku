@@ -20,6 +20,18 @@ public class Heuristics : ISolver
             new CageConstraint(cages)
         };
     }
+    
+    public Heuristics(int[,] board)
+    {
+        this.board = (int[,])board.Clone();
+        this.cages = new List<Cage>();
+        constraints = new List<IConstraint>
+        {
+            new RowConstraint(),
+            new ColumnConstraint(),
+            new BoxConstraint()
+        };
+    }
 
     bool IsValid(int row, int col, int num)
     {
@@ -47,7 +59,7 @@ public class Heuristics : ISolver
             if (IsValid(row, col, num))
             {
                 board[row, col] = num;
-                Printer.Print(board, cages);
+                // Printer.Print(board, cages);
                 if (SolveIternal()) return true;
                 board[row, col] = 0;
             }

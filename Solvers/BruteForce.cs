@@ -51,7 +51,7 @@ public class BruteForce : ISolver
         for (int num = 1; num <= 9; num++)
         {
             board[row, col] = num;
-            Printer.Print(board);
+            Printer.Print(board, cages);
             if (GenerateAndTest(idx + 1))
                 return true;
         }

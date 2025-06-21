@@ -48,7 +48,7 @@ public class BackTracking : ISolver
             if (IsValid(row, col, num))
             {
                 board[row, col] = num;
-                Printer.Print(board);
+                Printer.Print(board, cages);
                 if (SolveIternal(row, col + 1)) return true;
                 board[row, col] = 0;
             }

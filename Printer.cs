@@ -6,26 +6,34 @@ using System.Threading;
 
 public static class Printer
 {
+    static Dictionary<Cage, int> cageColoring;
+    static List<ConsoleColor> cageColors = new()
+    {
+        ConsoleColor.DarkBlue,
+        ConsoleColor.DarkGreen,
+        ConsoleColor.DarkCyan,
+        ConsoleColor.DarkRed
+    };
+
+    public static void InitializeColoring(List<Cage> cages)
+    {
+        cageColoring = Coloring.ColorCages(cages, cageColors.Count);
+    }
+
     public static void Print(int[,] board, List<Cage> cages)
     {
-        Console.SetCursorPosition(0, 0);
-        var cageColors = new List<ConsoleColor>
-        {
-            ConsoleColor.DarkBlue, ConsoleColor.DarkGreen, ConsoleColor.DarkCyan,
-            ConsoleColor.DarkRed, ConsoleColor.DarkMagenta, ConsoleColor.DarkYellow,
-            ConsoleColor.Gray, ConsoleColor.DarkGray, ConsoleColor.Blue,
-            ConsoleColor.Green, ConsoleColor.Cyan, ConsoleColor.Red,
-            ConsoleColor.Magenta, ConsoleColor.Yellow, ConsoleColor.White
-        };
+        if (cageColoring == null) InitializeColoring(cages);
+
+        Console.SetCursorPosition(0, 0); 
 
         for (int r = 0; r < 9; r++)
         {
             for (int c = 0; c < 9; c++)
             {
-                int cageIndex = cages.FindIndex(cg => cg.Cells.Contains((r, c)));
-                if (cageIndex != -1)
+                var cage = cages.Find(cg => cg.Cells.Contains((r, c)));
+                if (cage != null && cageColoring.TryGetValue(cage, out int colorIdx))
                 {
-                    var bg = cageColors[cageIndex % cageColors.Count];
+                    var bg = cageColors[colorIdx % cageColors.Count];
                     Console.BackgroundColor = bg;
                     Console.ForegroundColor = ConsoleColor.Black;
                 }

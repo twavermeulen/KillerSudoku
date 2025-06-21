@@ -48,7 +48,7 @@ class Program
         };
 
         
-        ISolver solver = new Heuristics(cages);
+        ISolver solver = new BackTracking(cages);
 
         var sw = Stopwatch.StartNew();
         bool solved = solver.Solve();

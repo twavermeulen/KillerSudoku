@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace KillerSudoku;
 
@@ -38,8 +39,7 @@ public class BackTracking : ISolver
     {
         if (row == 9) return true;
         if (col == 9) return SolveIternal(row + 1, 0);
-        
-        //alleen nodig bij normale sudoku, niet bij killer sudoku
+
         if (board[row, col] != 0)
             return SolveIternal(row, col + 1);
 
@@ -48,21 +48,11 @@ public class BackTracking : ISolver
             if (IsValid(row, col, num))
             {
                 board[row, col] = num;
+                Printer.Print(board);
                 if (SolveIternal(row, col + 1)) return true;
                 board[row, col] = 0;
             }
         }
         return false;
-    }
-    
-
-    public void PrintBoard()
-    {
-        for (int r = 0; r < 9; r++)
-        {
-            for (int c = 0; c < 9; c++)
-                Console.Write(board[r, c] + " ");
-            Console.WriteLine();
-        }
     }
 }

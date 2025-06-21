@@ -47,6 +47,7 @@ public class Heuristics : ISolver
             if (IsValid(row, col, num))
             {
                 board[row, col] = num;
+                Printer.Print(board);
                 if (SolveIternal()) return true;
                 board[row, col] = 0;
             }

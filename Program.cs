@@ -48,16 +48,12 @@ class Program
         };
 
         
-        ISolver solver = new Propagation(cages);
+        ISolver solver = new Heuristics(cages);
 
         var sw = Stopwatch.StartNew();
         bool solved = solver.Solve();
         sw.Stop();
-
-        if (solved)
-            solver.PrintBoard();
-        else
-            Console.WriteLine("No solution found!");
+        
 
         Console.WriteLine($"Time to complete: {sw.Elapsed.TotalSeconds:F3} seconds");
     }

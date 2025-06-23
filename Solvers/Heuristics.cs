@@ -21,10 +21,10 @@ public class Heuristics : ISolver
         };
     }
 
-    bool IsValid(int row, int col, int num)
+    bool IsValid(int row, int col, int domain)
     {
         foreach (var constraint in constraints)
-            if (!constraint.IsValid(board, row, col, num))
+            if (!constraint.IsValid(board, row, col, domain))
                 return false;
         return true;
     }
@@ -42,11 +42,11 @@ public class Heuristics : ISolver
         int row = variable.Value.row;
         int col = variable.Value.col;
 
-        for (int num = 1; num <= 9; num++)
+        for (int domain = 1; domain <= 9; domain++)
         {
-            if (IsValid(row, col, num))
+            if (IsValid(row, col, domain))
             {
-                board[row, col] = num;
+                board[row, col] = domain;
                 Printer.Print(board, cages);
                 if (SolveIternal()) return true;
                 board[row, col] = 0;

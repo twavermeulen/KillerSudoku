@@ -47,14 +47,12 @@ class Program
             new Cage(new List<(int,int)> { (8,7), (8,8) }, 17),
         };
 
-        
-        ISolver solver = new ConstraintPropagation(cages);
+        ISolver solver = new MinimumRemainingValues(cages);
 
         var sw = Stopwatch.StartNew();
         bool solved = solver.Solve();
         sw.Stop();
         
-
         Console.WriteLine($"Time to complete: {sw.Elapsed.TotalSeconds:F3} seconds");
     }
 }

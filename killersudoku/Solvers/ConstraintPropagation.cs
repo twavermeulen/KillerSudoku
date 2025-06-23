@@ -5,6 +5,10 @@ namespace KillerSudoku;
 
 public class ConstraintPropagation : ISolver
 {
+    List<int[,]> history = new();
+    public List<int[,]> GetHistory() => history;
+    public int[,] GetSolvedBoard() => board;
+
     int[,] board = new int[9, 9];
     List<Cage> cages;
     List<IConstraint> constraints;
@@ -49,19 +53,21 @@ public class ConstraintPropagation : ISolver
             {
                 var backup = CopyVariables();
                 board[row, col] = domain;
+                history.Add(CloneBoard());
+
                 variables[(row, col)] = new HashSet<int> { domain };
                 if (Propagate(row, col))
                 {
                     if (Solve()) return true;
                 }
                 board[row, col] = 0;
+                history.Add(CloneBoard());
+
                 variables = backup;
             }
         }
         return false;
     }
-
-   
 
     (int row, int col)? GetMRVVariable()
     {
@@ -138,5 +144,12 @@ public class ConstraintPropagation : ISolver
         foreach (var kv in variables)
             copy[kv.Key] = new HashSet<int>(kv.Value);
         return copy;
+    }
+
+   private int[,] CloneBoard()
+    {
+        var clone = new int[9, 9];
+        Array.Copy(board, clone, board.Length);
+        return clone;
     }
 }

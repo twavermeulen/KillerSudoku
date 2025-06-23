@@ -5,6 +5,10 @@ namespace KillerSudoku;
 
 public class BruteForce : ISolver
 {
+    List<int[,]> history = new();
+    public List<int[,]> GetHistory() => history;
+    public int[,] GetSolvedBoard() => board;
+
     int[,] board = new int[9, 9];
     List<Cage> cages;
     List<IConstraint> constraints;
@@ -51,11 +55,20 @@ public class BruteForce : ISolver
         for (int domain = 1; domain <= 9; domain++)
         {
             board[row, col] = domain;
-            Printer.Print(board, cages);
+            history.Add(CloneBoard());
+            // Printer.Print(board, cages);
             if (GenerateAndTest(idx + 1))
                 return true;
         }
         board[row, col] = 0;
+        history.Add(CloneBoard());
         return false;
+    }
+
+   private int[,] CloneBoard()
+    {
+        var clone = new int[9, 9];
+        Array.Copy(board, clone, board.Length);
+        return clone;
     }
 }

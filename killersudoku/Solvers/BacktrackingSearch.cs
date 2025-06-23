@@ -6,11 +6,16 @@ namespace KillerSudoku;
 
 public class BacktrackingSearch : ISolver
 {
+    List<int[,]> history = new();
+    public List<int[,]> GetHistory() => history;
+    public int[,] GetSolvedBoard() => board;
     int[,] board = new int[9, 9];
     List<IConstraint> constraints;
+    List<Cage> cages;
 
     public BacktrackingSearch(List<Cage> cages)
     {
+        this.cages = cages;
         constraints = new List<IConstraint>
         {
             new RowConstraint(),
@@ -46,11 +51,20 @@ public class BacktrackingSearch : ISolver
             if (IsValid(row, col, domain))
             {
                 board[row, col] = domain;
+                history.Add(CloneBoard());
                 // Printer.Print(board, cages);
                 if (SolveInternal(row, col + 1)) return true;
                 board[row, col] = 0;
+                history.Add(CloneBoard());
             }
         }
         return false;
+    }
+
+   private int[,] CloneBoard()
+    {
+        var clone = new int[9, 9];
+        Array.Copy(board, clone, board.Length);
+        return clone;
     }
 }

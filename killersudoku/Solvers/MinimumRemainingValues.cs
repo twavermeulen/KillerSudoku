@@ -5,11 +5,14 @@ namespace KillerSudoku;
 
 public class MinimumRemainingValues : ISolver
 {
+    List<int[,]> history = new();
     int[,] board = new int[9, 9];
     List<IConstraint> constraints;
+    List<Cage> cages;
 
     public MinimumRemainingValues(List<Cage> cages)
     {
+        this.cages = cages;
         constraints = new List<IConstraint>
         {
             new RowConstraint(),
@@ -30,7 +33,7 @@ public class MinimumRemainingValues : ISolver
     public bool Solve()
     {
         var variable = GetMRVVariable();
-        if (variable == null) return true; // puzzle solved
+        if (variable == null) return true;
 
         int row = variable.Value.row;
         int col = variable.Value.col;
@@ -40,9 +43,11 @@ public class MinimumRemainingValues : ISolver
             if (IsValid(row, col, domain))
             {
                 board[row, col] = domain;
+                history.Add(CloneBoard());
                 // Printer.Print(board, cages);
                 if (Solve()) return true;
                 board[row, col] = 0;
+                history.Add(CloneBoard());
             }
         }
         return false;
@@ -74,5 +79,14 @@ public class MinimumRemainingValues : ISolver
         }
 
         return minRow == -1 ? null : (minRow, minCol);
+    }
+
+    public List<int[,]> GetHistory() => history;
+    public int[,] GetSolvedBoard() => board;
+    private int[,] CloneBoard()
+    {
+        var clone = new int[9, 9];
+        Array.Copy(board, clone, board.Length);
+        return clone;
     }
 }

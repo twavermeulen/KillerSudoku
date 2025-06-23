@@ -26,10 +26,10 @@ public class BruteForce : ISolver
         for (int row = 0; row < 9; row++)
         for (int col = 0; col < 9; col++)
         {
-            int num = board[row, col];
-            if (num < 1 || num > 9) return false;
+            int domain = board[row, col];
+            if (domain < 1 || domain > 9) return false;
             foreach (var constraint in constraints)
-                if (!constraint.IsValid(board, row, col, num))
+                if (!constraint.IsValid(board, row, col, domain))
                     return false;
         }
         return true;
@@ -48,9 +48,9 @@ public class BruteForce : ISolver
         int row = idx / 9;
         int col = idx % 9;
 
-        for (int num = 1; num <= 9; num++)
+        for (int domain = 1; domain <= 9; domain++)
         {
-            board[row, col] = num;
+            board[row, col] = domain;
             Printer.Print(board, cages);
             if (GenerateAndTest(idx + 1))
                 return true;

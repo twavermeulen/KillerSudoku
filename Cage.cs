@@ -2,12 +2,12 @@ namespace KillerSudoku;
 
 public class Cage
 {
-    public List<(int r, int c)> Cells;
-    public int Sum;
+    public List<(int r, int c)> variables;
+    public int sum;
 
-    public Cage(List<(int r, int c)> cells, int sum)
+    public Cage(List<(int r, int c)> variables, int sum)
     {
-        Cells = cells;
-        Sum = sum;
+        this.variables = variables;
+        this.sum = sum;
     }
 }

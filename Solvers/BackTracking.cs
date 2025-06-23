@@ -4,13 +4,13 @@ using System.Threading;
 
 namespace KillerSudoku;
 
-public class BackTracking : ISolver
+public class Backtracking : ISolver
 {
     int[,] board = new int[9, 9];
     List<Cage> cages; 
     List<IConstraint> constraints;
 
-    public BackTracking(List<Cage> cages)
+    public Backtracking(List<Cage> cages)
     {
         this.cages = cages;
         constraints = new List<IConstraint>

@@ -3,31 +3,29 @@ using System.Collections.Generic;
 
 public class CageConstraint : IConstraint
 {
-    private readonly List<Cage> cages;
-    private Dictionary<(int,int), Cage> coordinatesByCage = new Dictionary<(int, int), Cage>();
+    private Dictionary<(int,int), Cage> coordinatesInCage = new Dictionary<(int, int), Cage>();
 
     public CageConstraint(List<Cage> cages)
     {
-        this.cages = cages;
         foreach (var cage in cages)
         {
-            foreach (var cell in cage.Cells)
+            foreach (var variable in cage.variables)
             {
-                coordinatesByCage.Add(cell, cage);
+                coordinatesInCage.Add(variable, cage);
             }
         }
     }
 
-    public bool IsValid(int[,] board, int row, int col, int num)
+    public bool IsValid(int[,] board, int row, int col, int domain)
     {
-        Cage cage = coordinatesByCage[(row, col)];
+        Cage cage = coordinatesInCage[(row, col)];
 
         int sum = 0;
         HashSet<int> seen = new();
-        foreach (var (r, c) in cage.Cells)
+        foreach (var (r, c) in cage.variables)
         {
             int val = board[r, c];
-            if ((r, c) == (row, col)) val = num;
+            if ((r, c) == (row, col)) val = domain;
             if (val != 0)
             {
                 if (seen.Contains(val)) return false;
@@ -36,8 +34,8 @@ public class CageConstraint : IConstraint
             }
         }
 
-        if (sum > cage.Sum) return false;
-        if (seen.Count == cage.Cells.Count && sum != cage.Sum) return false;
+        if (sum > cage.sum) return false;
+        if (seen.Count == cage.variables.Count && sum != cage.sum) return false;
 
         return true;
     }

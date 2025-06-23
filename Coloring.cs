@@ -12,19 +12,19 @@ public static class Coloring
         foreach (var cage in cages)
             adjacency[cage] = new HashSet<Cage>();
 
-        var cellToCage = new Dictionary<(int,int), Cage>();
+        var variableToCage = new Dictionary<(int,int), Cage>();
         foreach (var cage in cages)
-        foreach (var cell in cage.Cells)
-            cellToCage[cell] = cage;
+        foreach (var variable in cage.variables)
+            variableToCage[variable] = cage;
 
         foreach (var cage in cages)
         {
-            foreach (var (r, c) in cage.Cells)
+            foreach (var (r, c) in cage.variables)
             {
                 var neighbors = new (int,int)[] { (r-1,c), (r+1,c), (r,c-1), (r,c+1) };
                 foreach (var n in neighbors)
                 {
-                    if (cellToCage.TryGetValue(n, out var neighborCage) && neighborCage != cage)
+                    if (variableToCage.TryGetValue(n, out var neighborCage) && neighborCage != cage)
                         adjacency[cage].Add(neighborCage);
                 }
             }

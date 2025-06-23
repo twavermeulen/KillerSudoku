@@ -30,7 +30,7 @@ public static class Printer
         {
             for (int c = 0; c < 9; c++)
             {
-                var cage = cages.Find(cg => cg.Cells.Contains((r, c)));
+                var cage = cages.Find(cg => cg.variables.Contains((r, c)));
                 if (cage != null && cageColoring.TryGetValue(cage, out int colorIdx))
                 {
                     var bg = cageColors[colorIdx % cageColors.Count];

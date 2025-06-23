@@ -7,6 +7,7 @@ public class BruteForce : ISolver
 {
     List<int[,]> history = new();
     public List<int[,]> GetHistory() => history;
+    public int[,] GetSolvedBoard() => board;
 
     int[,] board = new int[9, 9];
     List<Cage> cages;

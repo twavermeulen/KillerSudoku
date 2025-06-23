@@ -82,7 +82,7 @@ public class MinimumRemainingValues : ISolver
     }
 
     public List<int[,]> GetHistory() => history;
-
+    public int[,] GetSolvedBoard() => board;
     private int[,] CloneBoard()
     {
         var clone = new int[9, 9];

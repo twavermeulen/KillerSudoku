@@ -72,7 +72,7 @@ app.MapGet("/api/solve", () =>
     }
 
     // 3. Solve the puzzle
-    ISolver solver = new MinimumRemainingValues(cages);
+    ISolver solver = new ConstraintPropagation(cages);
     var sw = Stopwatch.StartNew();
     bool solved = solver.Solve();
     sw.Stop();
@@ -91,7 +91,8 @@ app.MapGet("/api/solve", () =>
         Type = solver.GetType().Name,
         TimeSeconds = sw.Elapsed.TotalSeconds,
         History = historyJagged,
-        CageColors = cageColorsJagged
+        CageColors = cageColorsJagged,
+        board = BoardToJagged(solver.GetSolvedBoard()),
     };
 });
 

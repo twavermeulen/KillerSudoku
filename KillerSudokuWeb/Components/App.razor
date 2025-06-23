@@ -56,12 +56,27 @@
       }
     </style>
   </head>
-  <body class="bg-gray-50 min-h-screen flex flex-col justify-center">
+  <body class="bg-gray-50 min-h-screen flex flex-col items-center justify-center">
     <h2 class="text-4xl font-extrabold text-center text-gray-900 mb-6 tracking-wide">Killer Sudoku Solver</h2>
 
     <div id="info" class="text-center text-lg font-semibold text-gray-700 mb-4"></div>
 
-    <table id="board" class="sudoku-table shadow-lg"></table>
+    <!-- Flex container for two tables -->
+    <div class="flex flex-wrap justify-center gap-10">
+      <!-- Animated board -->
+      <div>
+        <h3 class="text-center text-lg font-semibold text-gray-800 mb-2">Solving...</h3>
+        <table id="board" class="sudoku-table shadow-lg"></table>
+      </div>
+
+      <!-- Final solved board -->
+      <div>
+        <h3 class="text-center text-lg font-semibold text-gray-800 mb-2">Solved</h3>
+        <table id="solved" class="sudoku-table shadow-lg"></table>
+      </div>
+    </div>
+
+    <div class="text-center text-lg font-semibold text-gray-700 mb-4">Created by Thomas Vermeulen & Sven Hu (2025)</div>
 
     <script>
       async function animateSolution() {
@@ -98,6 +113,33 @@
           '#fcd34d'  // amber-300
         ];
 
+        // Create solved board once animation is done
+        const solvedTable = document.getElementById('solved');
+        solvedTable.innerHTML = '';
+
+        for (let r = 0; r < 9; r++) {
+          const row = document.createElement('tr');
+          for (let c = 0; c < 9; c++) {
+            const cell = document.createElement('td');
+            console.log(JSON.stringify(data.board));
+            const val = data.board[r][c];
+            cell.textContent = val > 0 ? val : '';
+            if (val === 0) {
+              cell.className = 'empty';
+            }
+
+            // Optional: same background coloring as animated board
+            const cageIndex = data.cageColors?.[r]?.[c];
+            if (cageIndex !== undefined && cageIndex >= 0) {
+              const bgColor = cageColorPalette[cageIndex % cageColorPalette.length];
+              cell.style.backgroundColor = bgColor;
+            }
+
+            row.appendChild(cell);
+          }
+          solvedTable.appendChild(row);
+        }  
+
         // Animate each board snapshot
         for (const board of data.history) {
           for (let r = 0; r < 9; r++) {
@@ -128,6 +170,8 @@
       }
 
       animateSolution();
+
+
 
     </script>
   </body>

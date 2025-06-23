@@ -32,16 +32,16 @@ public class BackTracking : ISolver
 
     public bool Solve()
     {
-        return SolveIternal(0, 0);
+        return SolveInternal(0, 0);
     }
 
-    public bool SolveIternal(int row = 0, int col = 0)
+    public bool SolveInternal(int row = 0, int col = 0)
     {
         if (row == 9) return true;
-        if (col == 9) return SolveIternal(row + 1, 0);
+        if (col == 9) return SolveInternal(row + 1, 0);
 
         if (board[row, col] != 0)
-            return SolveIternal(row, col + 1);
+            return SolveInternal(row, col + 1);
 
         for (int domain = 1; domain <= 9; domain++)
         {
@@ -49,7 +49,7 @@ public class BackTracking : ISolver
             {
                 board[row, col] = domain;
                 Printer.Print(board, cages);
-                if (SolveIternal(row, col + 1)) return true;
+                if (SolveInternal(row, col + 1)) return true;
                 board[row, col] = 0;
             }
         }

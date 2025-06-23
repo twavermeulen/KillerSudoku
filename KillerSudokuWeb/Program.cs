@@ -72,7 +72,10 @@ app.MapGet("/api/solve", () =>
     }
 
     // 3. Solve the puzzle
-    ISolver solver = new ConstraintPropagation(cages);
+    // ISolver solver = new BruteForce(cages);
+    ISolver solver = new BacktrackingSearch(cages);
+    // ISolver solver = new MinimumRemainingValues(cages);
+    // ISolver solver = new ConstraintPropagation(cages);
     var sw = Stopwatch.StartNew();
     bool solved = solver.Solve();
     sw.Stop();

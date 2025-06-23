@@ -9,10 +9,12 @@ public class BackTracking : ISolver
     int[,] board = new int[9, 9];
     List<Cage> cages; 
     List<IConstraint> constraints;
+    DotTreeLogger logger;
 
-    public BackTracking(List<Cage> cages)
+    public BackTracking(List<Cage> cages, DotTreeLogger logger)
     {
         this.cages = cages;
+        this.logger = logger;
         constraints = new List<IConstraint>
         {
             new RowConstraint(),
@@ -32,7 +34,9 @@ public class BackTracking : ISolver
 
     public bool Solve()
     {
-        return SolveIternal(0, 0);
+        bool solved = SolveIternal(0, 0);
+        logger.Close();
+        return solved;
     }
 
     public bool SolveIternal(int row = 0, int col = 0)
@@ -45,13 +49,17 @@ public class BackTracking : ISolver
 
         for (int domain = 1; domain <= 9; domain++)
         {
+            string label = $"({row},{col})={domain}";
+            logger.PushNode(label);
             if (IsValid(row, col, domain))
             {
                 board[row, col] = domain;
-                Printer.Print(board, cages);
+                //Printer.Print(board, cages);
                 if (SolveIternal(row, col + 1)) return true;
                 board[row, col] = 0;
             }
+
+            logger.PopNode();
         }
         return false;
     }

@@ -9,10 +9,12 @@ public class Propagation : ISolver
     List<Cage> cages;
     List<IConstraint> constraints;
     Dictionary<(int, int), HashSet<int>> variables;
+    DotTreeLogger logger;
 
-    public Propagation(List<Cage> cages)
+    public Propagation(List<Cage> cages, DotTreeLogger logger)
     {
         this.cages = cages;
+        this.logger = logger;
         constraints = new List<IConstraint>
         {
             new RowConstraint(),
@@ -36,13 +38,19 @@ public class Propagation : ISolver
 
     public bool Solve()
     {
-        return SolveInternal();
+        bool solved = SolveInternal();
+        logger.Close();
+        return solved;
     }
 
     bool SolveInternal()
     {
         var variable = GetMRVVariable();
-        if (variable == null) return true;
+        if (variable == null)
+        {
+            logger.PushNode("✓ Solved!");
+            return true;
+        }
 
         int row = variable.Value.row;
         int col = variable.Value.col;
@@ -50,6 +58,9 @@ public class Propagation : ISolver
         var possible = new List<int>(variables[(row, col)]);
         foreach (int domain in possible)
         {
+            string label = $"Try {domain} at ({row},{col})";
+            logger.PushNode(label);
+
             if (IsValid(row, col, domain))
             {
                 var backup = CopyVariables();
@@ -62,6 +73,8 @@ public class Propagation : ISolver
                 board[row, col] = 0;
                 variables = backup;
             }
+
+            logger.PopNode();
         }
         return false;
     }

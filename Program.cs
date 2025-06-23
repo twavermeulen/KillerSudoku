@@ -47,13 +47,13 @@ class Program
             new Cage(new List<(int,int)> { (8,7), (8,8) }, 17),
         };
 
-        
-        ISolver solver = new Heuristics(cages);
+        DotTreeLogger logger = new("sudoku_tree.dot"); // global or pass into class
+
+        ISolver solver = new BackTracking(cages, logger);
 
         var sw = Stopwatch.StartNew();
         bool solved = solver.Solve();
         sw.Stop();
-        
 
         Console.WriteLine($"Time to complete: {sw.Elapsed.TotalSeconds:F3} seconds");
     }

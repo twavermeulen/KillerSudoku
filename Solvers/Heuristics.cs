@@ -8,10 +8,12 @@ public class Heuristics : ISolver
     int[,] board = new int[9, 9];
     List<Cage> cages; 
     List<IConstraint> constraints;
+    DotTreeLogger logger;
 
-    public Heuristics(List<Cage> cages)
+    public Heuristics(List<Cage> cages, DotTreeLogger logger)
     {
         this.cages = cages;
+        this.logger = logger;
         constraints = new List<IConstraint>
         {
             new RowConstraint(),
@@ -31,13 +33,20 @@ public class Heuristics : ISolver
 
     public bool Solve()
     {
-        return SolveIternal();
+        bool solved = SolveIternal();
+        logger.Close();
+        return solved;
     }
 
     public bool SolveIternal()
     {
         var variable = GetMRVVariable();
-        if (variable == null) return true; // puzzle solved
+        if (variable == null)
+        {
+            logger.PushNode("Solved");
+            logger.PopNode();
+            return true;
+        }
 
         int row = variable.Value.row;
         int col = variable.Value.col;
@@ -46,16 +55,18 @@ public class Heuristics : ISolver
         {
             if (IsValid(row, col, domain))
             {
+                string label = $"({row},{col})={domain}";
+                logger.PushNode(label);
+
                 board[row, col] = domain;
-                Printer.Print(board, cages);
                 if (SolveIternal()) return true;
                 board[row, col] = 0;
+
+                logger.PopNode();
             }
         }
         return false;
     }
-
-    
     
     (int row, int col)? GetMRVVariable()
     {

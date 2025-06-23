@@ -41,7 +41,12 @@ public class BackTracking : ISolver
 
     public bool SolveIternal(int row = 0, int col = 0)
     {
-        if (row == 9) return true;
+        if (row == 9)
+        {
+            logger.PushNode("✓ Solved!");
+            return true;
+        }
+        
         if (col == 9) return SolveIternal(row + 1, 0);
 
         if (board[row, col] != 0)

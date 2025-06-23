@@ -31,11 +31,6 @@ public class Heuristics : ISolver
 
     public bool Solve()
     {
-        return SolveIternal();
-    }
-
-    public bool SolveIternal()
-    {
         var variable = GetMRVVariable();
         if (variable == null) return true; // puzzle solved
 
@@ -48,13 +43,12 @@ public class Heuristics : ISolver
             {
                 board[row, col] = domain;
                 Printer.Print(board, cages);
-                if (SolveIternal()) return true;
+                if (Solve()) return true;
                 board[row, col] = 0;
             }
         }
         return false;
     }
-
     
     
     (int row, int col)? GetMRVVariable()

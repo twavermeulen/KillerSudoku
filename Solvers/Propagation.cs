@@ -36,11 +36,6 @@ public class Propagation : ISolver
 
     public bool Solve()
     {
-        return SolveInternal();
-    }
-
-    bool SolveInternal()
-    {
         var variable = GetMRVVariable();
         if (variable == null) return true;
 
@@ -57,7 +52,7 @@ public class Propagation : ISolver
                 variables[(row, col)] = new HashSet<int> { domain };
                 if (Propagate(row, col))
                 {
-                    if (SolveInternal()) return true;
+                    if (Solve()) return true;
                 }
                 board[row, col] = 0;
                 variables = backup;
@@ -65,6 +60,8 @@ public class Propagation : ISolver
         }
         return false;
     }
+
+   
 
     (int row, int col)? GetMRVVariable()
     {

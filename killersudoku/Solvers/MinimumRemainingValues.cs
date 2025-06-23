@@ -44,7 +44,7 @@ public class MinimumRemainingValues : ISolver
             {
                 board[row, col] = domain;
                 history.Add(CloneBoard());
-                // Printer.Print(board, cages);
+                Printer.Print(board, cages);
                 if (Solve()) return true;
                 board[row, col] = 0;
                 history.Add(CloneBoard());

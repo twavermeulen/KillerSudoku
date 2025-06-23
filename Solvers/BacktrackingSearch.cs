@@ -11,7 +11,6 @@ public class BacktrackingSearch : ISolver
 
     public BacktrackingSearch(List<Cage> cages)
     {
-        this.cages = cages;
         constraints = new List<IConstraint>
         {
             new RowConstraint(),

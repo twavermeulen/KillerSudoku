@@ -10,7 +10,6 @@ public class MinimumRemainingValues : ISolver
 
     public MinimumRemainingValues(List<Cage> cages)
     {
-        this.cages = cages;
         constraints = new List<IConstraint>
         {
             new RowConstraint(),

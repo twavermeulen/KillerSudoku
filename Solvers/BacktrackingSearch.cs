@@ -19,6 +19,17 @@ public class BacktrackingSearch : ISolver
             new CageConstraint(cages)
         };
     }
+    
+    public BacktrackingSearch(int[,] board)
+    {
+        this.board = board;
+        constraints = new List<IConstraint>
+        {
+            new RowConstraint(),
+            new ColumnConstraint(),
+            new BoxConstraint(),
+        };
+    }
 
     bool IsValid(int row, int col, int domain)
     {
@@ -35,7 +46,12 @@ public class BacktrackingSearch : ISolver
 
     public bool SolveInternal(int row = 0, int col = 0)
     {
-        if (row == 9) return true;
+        if (row == 9)
+        {
+            // Printer.Print(board);
+            return true;
+        };
+        
         if (col == 9) return SolveInternal(row + 1, 0);
 
         if (board[row, col] != 0)

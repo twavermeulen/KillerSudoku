@@ -46,9 +46,25 @@ class Program
             new Cage(new List<(int,int)> { (8,4), (8,5), (8,6) }, 13),
             new Cage(new List<(int,int)> { (8,7), (8,8) }, 17),
         };
-
         
-        ISolver solver = new ConstraintPropagation(cages);
+        
+        int[,] board = new int[9, 9]
+        {
+            {0,3,0, 0,0,0, 0,0,0},
+            {6,0,0, 1,0,0, 0,0,0},
+            {0,0,8, 0,0,0, 0,6,0},
+        
+            {0,0,0, 0,6,0, 0,0,0},
+            {0,0,0, 0,0,3, 0,0,1},
+            {7,0,0, 0,0,0, 0,0,6},
+        
+            {0,6,0, 0,0,0, 2,8,0},
+            {0,0,0, 4,0,9, 0,0,0},
+            {0,0,0, 0,0,0, 0,7,0}
+        };
+        
+        
+        ISolver solver = new MinimumRemainingValues(board);
 
         var sw = Stopwatch.StartNew();
         bool solved = solver.Solve();

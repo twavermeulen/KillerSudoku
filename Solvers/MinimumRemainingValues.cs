@@ -18,6 +18,18 @@ public class MinimumRemainingValues : ISolver
             new CageConstraint(cages)
         };
     }
+    
+    public MinimumRemainingValues(int[,] board)
+    {
+        this.board = board;
+        constraints = new List<IConstraint>
+        {
+            new RowConstraint(),
+            new ColumnConstraint(),
+            new BoxConstraint(),
+        };
+    }
+    
 
     bool IsValid(int row, int col, int domain)
     {
@@ -30,7 +42,11 @@ public class MinimumRemainingValues : ISolver
     public bool Solve()
     {
         var variable = GetMRVVariable();
-        if (variable == null) return true; // puzzle solved
+        if (variable == null)
+        {
+            // Printer.Print(board);
+            return true; // All variables are assigned
+        }
 
         int row = variable.Value.row;
         int col = variable.Value.col;

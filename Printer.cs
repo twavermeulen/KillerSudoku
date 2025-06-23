@@ -49,4 +49,16 @@ public static class Printer
         }
         Thread.Sleep(50);
     }
+    
+    public static void Print(int[,] board)
+    {
+        for (int r = 0; r < 9; r++)
+        {
+            for (int c = 0; c < 9; c++)
+            {
+                Console.Write(board[r, c].ToString().PadLeft(2).PadRight(3));
+            }
+            Console.WriteLine();
+        }
+    }
 }

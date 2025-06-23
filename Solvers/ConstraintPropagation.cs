@@ -25,6 +25,8 @@ public class ConstraintPropagation : ISolver
             for (int c = 0; c < 9; c++)
                 variables[(r, c)] = new HashSet<int>(Enumerable.Range(1, 9));
     }
+    
+    
 
     bool IsValid(int row, int col, int domain)
     {

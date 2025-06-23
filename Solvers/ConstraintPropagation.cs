@@ -3,14 +3,14 @@ using System.Collections.Generic;
 
 namespace KillerSudoku;
 
-public class Propagation : ISolver
+public class ConstraintPropagation : ISolver
 {
     int[,] board = new int[9, 9];
     List<Cage> cages;
     List<IConstraint> constraints;
     Dictionary<(int, int), HashSet<int>> variables;
 
-    public Propagation(List<Cage> cages)
+    public ConstraintPropagation(List<Cage> cages)
     {
         this.cages = cages;
         constraints = new List<IConstraint>

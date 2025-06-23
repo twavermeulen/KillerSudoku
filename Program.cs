@@ -48,7 +48,7 @@ class Program
         };
 
         
-        ISolver solver = new Backtracking(cages);
+        ISolver solver = new ConstraintPropagation(cages);
 
         var sw = Stopwatch.StartNew();
         bool solved = solver.Solve();

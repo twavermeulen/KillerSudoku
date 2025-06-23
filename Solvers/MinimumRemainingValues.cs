@@ -3,13 +3,12 @@ using System.Collections.Generic;
 
 namespace KillerSudoku;
 
-public class Heuristics : ISolver
+public class MinimumRemainingValues : ISolver
 {
     int[,] board = new int[9, 9];
-    List<Cage> cages; 
     List<IConstraint> constraints;
 
-    public Heuristics(List<Cage> cages)
+    public MinimumRemainingValues(List<Cage> cages)
     {
         this.cages = cages;
         constraints = new List<IConstraint>
@@ -42,7 +41,7 @@ public class Heuristics : ISolver
             if (IsValid(row, col, domain))
             {
                 board[row, col] = domain;
-                Printer.Print(board, cages);
+                // Printer.Print(board, cages);
                 if (Solve()) return true;
                 board[row, col] = 0;
             }
